@@ -13,7 +13,7 @@ const timer = () => {
             console.log("Component Unmounted")
         }
     )
-  },[])
+  },[time])
   
   return (
     <div className = "TimerClass">
