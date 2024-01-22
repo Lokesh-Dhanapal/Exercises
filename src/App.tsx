@@ -1,12 +1,12 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import PokemonDet from "./pages/PokemonDet";
+import Pokemon from "./pages/Pokemon";
 
 function App() {
   return (
     <>
       <Navbar />
-      <PokemonDet />
+      <Pokemon />
     </>
   );
 }
