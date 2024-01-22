@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 import { useQuery } from "react-query";
-import { TableContainer } from "@mui/material";
+import { Card, TableContainer } from "@mui/material";
 import { Table } from "@mui/material";
 import { TableBody } from "@mui/material";
 import { TableHead } from "@mui/material";
 import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
-import { Paper } from "@mui/material";
+import { Paper} from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import ButtonComponent from "../components/ButtonComponent";
@@ -41,13 +41,13 @@ const Pokemon = () => {
     refetch();
   }, [url, result]);
 
-  const onPrevClick = () => {
+  const handlePrevClick = () => {
     if (data?.previous) {
       setUrl(data.previous);
     }
   };
 
-  const onNextClick = () => {
+  const handleNextClick = () => {
     if (data?.next) {
       setUrl(data?.next);
     }
@@ -92,14 +92,14 @@ const Pokemon = () => {
             <TableRow>
               <TableCell>
                 <ButtonComponent
-                  onClick={onPrevClick}
+                  onClick={handlePrevClick}
                   isAvailable={Boolean(isPrevAvailable)}
                   text="PREV"
                 />
               </TableCell>
               <TableCell align="right">
               <ButtonComponent
-                  onClick={onNextClick}
+                  onClick={handleNextClick}
                   isAvailable={Boolean(isNextAvailable)}
                   text="NEXT"
                 />
