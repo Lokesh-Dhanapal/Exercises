@@ -1,26 +1,14 @@
-import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-import './App.css'
-import Timer from './components/timer'
+import "./App.css";
+import Navbar from "./components/Navbar";
+import PokemonDet from "./pages/PokemonDet";
 
 function App() {
-  const [timerState, setTimerState] = useState(false)
-  
   return (
     <>
-      <div className="card">
-        {!timerState ? <button onClick={() => setTimerState(true)}>
-          click to Show the timer
-        </button> : <button onClick={() => setTimerState(false)}>
-          click to hide the timer
-        </button> }
-        <div>
-          {timerState ? <Timer/> : null}
-        </div>
-      </div>
+      <Navbar />
+      <PokemonDet />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
