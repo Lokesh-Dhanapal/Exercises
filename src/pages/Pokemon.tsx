@@ -1,15 +1,16 @@
 import { useState, useEffect, useMemo } from "react";
 import { useQuery } from "react-query";
-import { Card, TableContainer } from "@mui/material";
+import { TableContainer } from "@mui/material";
 import { Table } from "@mui/material";
 import { TableBody } from "@mui/material";
 import { TableHead } from "@mui/material";
 import { TableRow } from "@mui/material";
 import { TableCell } from "@mui/material";
-import { Paper} from "@mui/material";
+import { Paper } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import ButtonComponent from "../components/ButtonComponent";
+import ModalComponent from "../components/ModalComponent";
 
 interface Result {
   name: string;
@@ -27,12 +28,17 @@ const Pokemon = () => {
     "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0"
   );
 
+  const [isModalOpen , setModalOpen] = useState(false)
+  const [selectedUrl, setSelectedUrl] = useState<string>("");
+
   const { data, isLoading, isError, refetch } = useQuery<Data>({
+    queryKey : ["pokemonComponet"],
     queryFn: async () => {
       const response = await axios.get(url);
       return response.data;
     },
   });
+
   const result = data?.results;
   const isNextAvailable = data?.next;
   const isPrevAvailable = data?.previous;
@@ -53,6 +59,15 @@ const Pokemon = () => {
     }
   };
 
+  const handleModal =(url : string) => {
+    setModalOpen(true)
+    setSelectedUrl(url)
+  }
+
+  const handleClose = () => {
+    setModalOpen(false)
+  }
+
   const memoizedResults = useMemo(() => result, [result, url]);
 
   return (
@@ -64,8 +79,15 @@ const Pokemon = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>URL</TableCell>
+              <TableCell
+                align="center"
+                style={{ width: 350, border: "0.2px solid grey" }}
+              >
+                Name
+              </TableCell>
+              <TableCell align="center" style={{ border: "0.2px solid grey" }}>
+                URL
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -80,16 +102,22 @@ const Pokemon = () => {
             ) : (
               memoizedResults?.map((value) => (
                 <TableRow>
-                  <TableCell>{value.name}</TableCell>
-                  <TableCell>
-                    <a href={value.url}>{value.url}</a>
+                  <TableCell style={{ width: 350, border: "0.2px solid grey" }}>
+                    {value.name}
+                  </TableCell>
+                  <TableCell style={{ border: "0.2px solid grey" }}>
+                    <ButtonComponent
+                      onClick={() => handleModal(value.url)}
+                      isAvailable={true}
+                      text="View Details"
+                    />
                   </TableCell>
                 </TableRow>
               ))
             )}
           </TableBody>
           <TableBody>
-            <TableRow>
+            <TableRow  style={{ border: "0.2px solid grey" }}>
               <TableCell>
                 <ButtonComponent
                   onClick={handlePrevClick}
@@ -98,7 +126,7 @@ const Pokemon = () => {
                 />
               </TableCell>
               <TableCell align="right">
-              <ButtonComponent
+                <ButtonComponent
                   onClick={handleNextClick}
                   isAvailable={Boolean(isNextAvailable)}
                   text="NEXT"
@@ -108,6 +136,9 @@ const Pokemon = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {
+        isModalOpen ? <ModalComponent open = {Boolean(isModalOpen)} onClose = {handleClose} url={selectedUrl}/> : null
+      }
     </div>
   );
 };
